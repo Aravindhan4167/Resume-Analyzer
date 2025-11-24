@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// --- Supabase Client Initialization (for Auth) ---
+// --- Supabase Client Initialization (for Auth) 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 if (!supabaseUrl || !supabaseKey) {
