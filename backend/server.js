@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// --- Supabase Client Initialization (for Auth) 
+// Supabase Client Initialization (for Auth) 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 if (!supabaseUrl || !supabaseKey) {
@@ -18,7 +18,7 @@ if (!supabaseUrl || !supabaseKey) {
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// --- Mongoose Schemas and Models ---
+// Mongoose Schemas and Models 
 const roleSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true },
     keywords: { type: [String], required: true }
@@ -34,7 +34,7 @@ const resumeSchema = new mongoose.Schema({
 });
 const Resume = mongoose.model('Resume', resumeSchema);
 
-// --- Database Seeding for Roles ---
+// Database Seeding for Roles 
 const seedRoles = async () => {
     try {
         const count = await Role.countDocuments();
@@ -51,7 +51,6 @@ const seedRoles = async () => {
             { name: 'Data Scientist', keywords: ['python', 'r', 'sql', 'machine learning', 'tensorflow', 'statistics'] },
             { name: 'UX Designer', keywords: ['figma', 'sketch', 'wireframe', 'prototype', 'user research'] },
             { name: 'Project Manager', keywords: ['gantt chart', 'agile', 'scrum', 'budget', 'pmp'] },
-            { name: 'Other', keywords: [] }
         ];
         await Role.insertMany(defaultRoles);
         console.log('Default roles have been added to the database.');
@@ -61,7 +60,7 @@ const seedRoles = async () => {
     }
 };
 
-// --- MongoDB Connection and App Start ---
+// MongoDB Connection and App Start 
 const mongoUri = process.env.MONGODB_URI;
 if (!mongoUri) {
   console.error("Error: MONGODB_URI is required.");
@@ -80,13 +79,13 @@ mongoose.connect(mongoUri)
     process.exit(1);
   });
 
-// --- Middleware ---
+// Middleware 
 app.use(cors());
 app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// --- Auth Middleware ---
+// Auth Middleware 
 const authenticate = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return res.status(401).json({ error: 'Authorization header is missing.' });
@@ -99,7 +98,7 @@ const authenticate = async (req, res, next) => {
     next();
 };
 
-// --- API Routes ---
+// API Routes 
 app.get('/api/roles', authenticate, async (req, res) => {
     try {
         const roles = await Role.find().sort({ name: 1 });
